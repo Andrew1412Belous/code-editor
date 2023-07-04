@@ -1,11 +1,10 @@
-import * as esbuild from 'esbuild-wasm'
+import * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
-import localForage from "localforage"
+import localForage from 'localforage';
 
 const fileCache = localForage.createInstance({
 	name: 'fileCache',
-
-})
+});
 
 export const fetchPlugin = (inputCode: string) => {
 	return {
@@ -22,20 +21,23 @@ export const fetchPlugin = (inputCode: string) => {
 				const cashedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
 
 				if (cashedResult) {
-					return cashedResult
+					return cashedResult;
 				}
 
 				const { data, request } = await axios.get(args.path);
-				const result: esbuild.OnLoadResult =  {
-					loader: 'jsx',
+
+				const loader = args.path.match(/.css$/) ? 'css' : 'jsx';
+
+				const result: esbuild.OnLoadResult = {
+					loader,
 					contents: data,
 					resolveDir: new URL('./', request.responseURL).pathname,
 				};
 
-				await fileCache.setItem(args.path, result)
+				await fileCache.setItem(args.path, result);
 
-				return result
+				return result;
 			});
-		}
-	}
-}
+		},
+	};
+};
