@@ -11,6 +11,7 @@ const App = () => {
 	const [code, setCode] = useState('');
 
 	const ref = useRef<any>();
+	const iframe = useRef<any>();
 
 	const startService = async () => {
 		ref.current = await esbuild.startService({
@@ -37,11 +38,22 @@ const App = () => {
 			},
 		});
 
-		setCode(result.outputFiles[0].text);
+		// setCode(result.outputFiles[0].text);
+		iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
 	};
 
 	const html = `
-		<script>${code}</script>
+		<html>
+			<head></head>	
+			<body>
+				<div id='root'></div>
+				<script>
+					window.addEventListener('message', (event) => {
+						eval(event.data)
+					}, false)
+				</script>
+			</body>
+		</html>
 	`;
 
 	return (
@@ -52,7 +64,7 @@ const App = () => {
 			</div>
 			<pre>{code}</pre>
 			{/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-			<iframe srcDoc={html} sandbox="allow-scripts"></iframe>
+			<iframe ref={iframe} srcDoc={html} sandbox="allow-scripts"></iframe>
 		</div>
 	);
 };
