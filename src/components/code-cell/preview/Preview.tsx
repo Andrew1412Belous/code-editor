@@ -8,7 +8,9 @@ interface PreviewProps {
 
 const html = `
 		<html lang='en'>
-			<head><title>Code editor</title></head>	
+			<head>
+				<title>Code editor</title>
+			</head>	
 			<body>
 				<div id='root'></div>
 				<script>
