@@ -1,4 +1,4 @@
-import CodeCell from './code-cell/code-cell';
+import CodeCell from './code-cell/Code-cell';
 
 const App = () => {
 	return (

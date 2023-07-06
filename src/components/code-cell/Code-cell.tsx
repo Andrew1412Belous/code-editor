@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import bundle from '../../bundler/index';
-import CodeEditor from './code-editor/code-editor';
-import Preview from './preview';
+import CodeEditor from './code-editor/Code-editor';
+import Preview from './preview/Preview';
+import Resizable from './resizable/Resizable';
 
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
@@ -16,13 +17,12 @@ const CodeCell: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<CodeEditor initialValue="const a = 1;" onChange={(value) => setInput(value)} />
-			<div>
-				<button onClick={onClick}>Submit</button>
+		<Resizable direction="vertical">
+			<div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+				<CodeEditor initialValue="const a = 1;" onChange={(value) => setInput(value)} />
+				<Preview code={code} />
 			</div>
-			<Preview code={code} />
-		</div>
+		</Resizable>
 	);
 };
 
