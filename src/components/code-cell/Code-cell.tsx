@@ -8,13 +8,15 @@ import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
 const CodeCell: React.FC = () => {
 	const [code, setCode] = useState('');
+	const [err, setErr] = useState('');
 	const [input, setInput] = useState('');
 
 	useEffect(() => {
 		const timer = setTimeout(async () => {
 			const result = await bundle(input);
 
-			setCode(result);
+			setCode(result.code);
+			setErr(result.err);
 		}, 750);
 
 		return () => {
@@ -28,7 +30,7 @@ const CodeCell: React.FC = () => {
 				<Resizable direction="horizontal">
 					<CodeEditor initialValue="const a = 1;" onChange={(value) => setInput(value)} />
 				</Resizable>
-				<Preview code={code} />
+				<Preview code={code} err={err} />
 			</div>
 		</Resizable>
 	);
