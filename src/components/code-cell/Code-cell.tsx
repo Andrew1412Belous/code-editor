@@ -3,17 +3,22 @@ import bundle from '../../bundler/index';
 import CodeEditor from './code-editor/Code-editor';
 import Preview from './preview/Preview';
 import Resizable from './resizable/Resizable';
+import { Cell } from '../../store';
+import { useCellsActions } from '../../hooks/useActions/useCellsActions';
 
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
+interface CodeCellProps {
+	cell: Cell;
+}
 
-const CodeCell: React.FC = () => {
+const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 	const [code, setCode] = useState('');
 	const [err, setErr] = useState('');
-	const [input, setInput] = useState('');
+
+	const { updateCell } = useCellsActions();
 
 	useEffect(() => {
 		const timer = setTimeout(async () => {
-			const result = await bundle(input);
+			const result = await bundle(cell.content);
 
 			setCode(result.code);
 			setErr(result.err);
@@ -22,13 +27,16 @@ const CodeCell: React.FC = () => {
 		return () => {
 			clearTimeout(timer);
 		};
-	}, [input]);
+	}, [cell.content]);
 
 	return (
 		<Resizable direction="vertical">
 			<div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
 				<Resizable direction="horizontal">
-					<CodeEditor initialValue="const a = 1;" onChange={(value) => setInput(value)} />
+					<CodeEditor
+						initialValue={cell.content}
+						onChange={(value) => updateCell({ id: cell.id, content: value })}
+					/>
 				</Resizable>
 				<Preview code={code} err={err} />
 			</div>

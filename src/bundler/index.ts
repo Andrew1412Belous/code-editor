@@ -14,7 +14,7 @@ const bundle = async (rawCode: string) => {
 
 	try {
 		const result = await service.build({
-			entryPoints: ['index.ts.js'],
+			entryPoints: ['index.js'],
 			bundle: true,
 			write: false,
 			plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
