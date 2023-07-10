@@ -8,28 +8,28 @@ export const store = configureStore({
 });
 
 store.dispatch(
-	cellsActions.insertCellBefore({
+	cellsActions.insertCellAfter({
 		id: null,
 		type: 'code',
 	}),
 );
 
 store.dispatch(
-	cellsActions.insertCellBefore({
+	cellsActions.insertCellAfter({
 		id: null,
 		type: 'text',
 	}),
 );
 
 store.dispatch(
-	cellsActions.insertCellBefore({
+	cellsActions.insertCellAfter({
 		id: null,
 		type: 'code',
 	}),
 );
 
 store.dispatch(
-	cellsActions.insertCellBefore({
+	cellsActions.insertCellAfter({
 		id: null,
 		type: 'text',
 	}),

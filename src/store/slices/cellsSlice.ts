@@ -2,7 +2,7 @@ import { Cell, CellsState } from '../types/cell';
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	DeleteCellAction,
-	InsertCellBeforeAction,
+	InsertCellAfterAction,
 	MoveCellAction,
 	UpdateCellAction,
 } from '../actions/cellAction';
@@ -27,7 +27,7 @@ const cellsSlice = createSlice({
 			delete state.data[action.payload.id];
 			state.order = state.order.filter((id) => id !== action.payload.id);
 		},
-		insertCellBefore(state, action: InsertCellBeforeAction) {
+		insertCellAfter(state, action: InsertCellAfterAction) {
 			const cell: Cell = {
 				content: '',
 				type: action.payload.type,
@@ -39,9 +39,9 @@ const cellsSlice = createSlice({
 			const foundIndex = state.order.findIndex((id) => id === action.payload.id);
 
 			if (foundIndex < 0) {
-				state.order.push(cell.id);
+				state.order.unshift(cell.id);
 			} else {
-				state.order.splice(foundIndex, 0, cell.id);
+				state.order.splice(foundIndex + 1, 0, cell.id);
 			}
 		},
 		moveCell(state, action: MoveCellAction) {
