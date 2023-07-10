@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import bundle from '../../../bundler';
+import React, { useEffect } from 'react';
 import CodeEditor from './code-editor/Code-editor';
 import Preview from './preview/Preview';
 import Resizable from './resizable/Resizable';
@@ -20,6 +19,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 	useEffect(() => {
 		if (!bundle) {
 			dispatch(createBundle({ cellId: cell.id, input: cell.content }));
+			return;
 		}
 
 		const timer = setTimeout(async () => {
@@ -29,6 +29,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 		return () => {
 			clearTimeout(timer);
 		};
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cell.id, cell.content]);
 
 	return (
@@ -40,7 +41,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 						onChange={(value) => updateCell({ id: cell.id, content: value })}
 					/>
 				</Resizable>
-				{bundle && <Preview code={bundle.code} err={bundle.err} />}
+				{!bundle || bundle.loading ? (
+					<div>Loading...</div>
+				) : (
+					<Preview code={bundle.code} err={bundle.err} />
+				)}
 			</div>
 		</Resizable>
 	);

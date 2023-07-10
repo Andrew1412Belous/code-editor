@@ -6,7 +6,7 @@ import { cellsActions } from '../../store';
 export const useCellsActions = () => {
 	const dispatch = useDispatch();
 
-	// return useMemo(() => {
-	return bindActionCreators(cellsActions, dispatch);
-	// }, [dispatch]);
+	return useMemo(() => {
+		return bindActionCreators(cellsActions, dispatch);
+	}, [dispatch]);
 };
