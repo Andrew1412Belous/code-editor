@@ -7,5 +7,33 @@ export const store = configureStore({
 	},
 });
 
+store.dispatch(
+	cellsActions.insertCellBefore({
+		id: null,
+		type: 'code',
+	}),
+);
+
+store.dispatch(
+	cellsActions.insertCellBefore({
+		id: null,
+		type: 'text',
+	}),
+);
+
+store.dispatch(
+	cellsActions.insertCellBefore({
+		id: null,
+		type: 'code',
+	}),
+);
+
+store.dispatch(
+	cellsActions.insertCellBefore({
+		id: null,
+		type: 'text',
+	}),
+);
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

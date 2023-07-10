@@ -27,7 +27,7 @@ const cellsSlice = createSlice({
 			delete state.data[action.payload.id];
 			state.order = state.order.filter((id) => id !== action.payload.id);
 		},
-		insertCell(state, action: InsertCellBeforeAction) {
+		insertCellBefore(state, action: InsertCellBeforeAction) {
 			const cell: Cell = {
 				content: '',
 				type: action.payload.type,

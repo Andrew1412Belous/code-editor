@@ -2,7 +2,7 @@ import React from 'react';
 import { Cell } from '../../store';
 import CodeCell from './code-cell/Code-cell';
 import TextEditor from './text-editor/Text-editor';
-import ActionBar from './action-bar/action-bar';
+import ActionBar from './action-bar/Action-bar';
 
 import './cell-list-item.css';
 

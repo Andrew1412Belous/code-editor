@@ -1,4 +1,4 @@
-import CellList from './cell-list/cell-list';
+import CellList from './cell-list/Cell-list';
 
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
