@@ -8,6 +8,7 @@ import { useTypedDispatch } from '../../../hooks/useTypedDispatch';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 import './code-cell.css';
+import { useCumulativeCode } from '../../../hooks/useCumulativeCode';
 
 interface CodeCellProps {
 	cell: Cell;
@@ -16,7 +17,10 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 	const { updateCell } = useCellsActions();
 	const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+	const cumulativeCode = useCumulativeCode(cell.id);
 	const dispatch = useTypedDispatch();
+
+	console.log(cumulativeCode);
 
 	useEffect(() => {
 		if (!bundle) {
