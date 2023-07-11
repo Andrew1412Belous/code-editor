@@ -1,9 +1,11 @@
-import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
+import MonacoEditor, { OnMount } from '@monaco-editor/react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
 import React, { useRef } from 'react';
-import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
+
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
 
 import './code-editor.css';
 import './syntax.css';
@@ -17,28 +19,28 @@ interface CodeEditorProps {
 const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 	const editorRef = useRef<any>();
 
-	const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
-		editorRef.current = monacoEditor;
+	const onEditorDidMount: OnMount = (editor, monaco) => {
+		editorRef.current = editor;
 
-		monacoEditor.onDidChangeModelContent(() => {
-			onChange(getValue());
+		editor.onDidChangeModelContent(() => {
+			onChange(editor.getValue());
 		});
 
-		monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
+		editor.getModel()?.updateOptions({ tabSize: 2 });
 
-		const highlighter = new Highlighter(
-			//@ts-ignore
-			window.monaco,
-			codeShift,
-			monacoEditor,
-		);
+		const highlighter = new Highlighter(monaco, parse, traverse, editor);
 
-		highlighter.highLightOnDidChangeModelContent(
-			() => {},
-			() => {},
-			undefined,
-			() => {},
-		);
+		// highlighter.highLightOnDidChangeModelContent(100);
+
+		highlighter.highLightOnDidChangeModelContent(100);
+		highlighter.addJSXCommentCommand();
+
+		// highlighter.highLightOnDidChangeModelContent(
+		// 	() => {},
+		// 	() => {},
+		// 	undefined,
+		// 	() => {},
+		// );
 	};
 
 	const onFormatCLick = () => {
@@ -67,11 +69,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 				Format
 			</button>
 			<MonacoEditor
-				editorDidMount={onEditorDidMount}
 				value={initialValue}
 				height="100%"
 				language="javascript"
-				theme="dark"
+				theme="vs-dark"
+				onMount={onEditorDidMount}
 				options={{
 					wordWrap: 'on',
 					minimap: { enabled: false },
