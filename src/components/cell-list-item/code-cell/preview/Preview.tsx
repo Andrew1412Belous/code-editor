@@ -30,6 +30,7 @@ const html = `
                     
 					window.addEventListener('message', (event) => {
 						try {
+              root.innerHTML = ''
 					    eval(event.data)
 						} catch (err) {
 							handlerError(err)

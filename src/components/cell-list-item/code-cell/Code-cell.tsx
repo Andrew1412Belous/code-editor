@@ -6,9 +6,9 @@ import { Cell, createBundle } from '../../../store';
 import { useCellsActions } from '../../../hooks/useActions/useCellsActions';
 import { useTypedDispatch } from '../../../hooks/useTypedDispatch';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
+import { useCumulativeCode } from '../../../hooks/useCumulativeCode';
 
 import './code-cell.css';
-import { useCumulativeCode } from '../../../hooks/useCumulativeCode';
 
 interface CodeCellProps {
 	cell: Cell;
@@ -20,23 +20,21 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }: CodeCellProps) => {
 	const cumulativeCode = useCumulativeCode(cell.id);
 	const dispatch = useTypedDispatch();
 
-	console.log(cumulativeCode);
-
 	useEffect(() => {
 		if (!bundle) {
-			dispatch(createBundle({ cellId: cell.id, input: cell.content }));
+			dispatch(createBundle({ cellId: cell.id, input: cumulativeCode }));
 			return;
 		}
 
 		const timer = setTimeout(async () => {
-			dispatch(createBundle({ cellId: cell.id, input: cell.content }));
+			dispatch(createBundle({ cellId: cell.id, input: cumulativeCode }));
 		}, 750);
 
 		return () => {
 			clearTimeout(timer);
 		};
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cell.id, cell.content]);
+	}, [cell.id, cumulativeCode]);
 
 	return (
 		<Resizable direction="vertical">
